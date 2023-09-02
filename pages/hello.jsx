@@ -1,64 +1,125 @@
 import React, { useState } from 'react';
-import { collection, addDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Correctly import Firebase Storage functions
-import { db } from './firebase'; // Import the Firebase Firestore instance
+import axios from 'axios';
+import addUser from '../src/data';
 
-function AddProduct() {
-  const [productData, setProductData] = useState({
-    title: '',
+const UserInputForm = () => {
+  const [inputData, setInputData] = useState({
+    productName: '',
+    productId: 0,
     price: 0,
-    features: '',
     description: '',
-    productNumber: '',
-    photo: null,
+    features: '',
   });
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setProductData((prevData) => ({ ...prevData, photo: file }));
+  const [selectedImage, setSelectedImage] = useState(null); // Track selected image file
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setInputData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleImageSelect = (event) => {
+    const imageFile = event.target.files[0];
+    setSelectedImage(imageFile);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Upload photo to Firebase Storage and get download URL
-    const storageRef = ref(getStorage(), productData.photo.name); // Use the photo name directly
-    await uploadBytes(storageRef, productData.photo);
-    const photoUrl = await getDownloadURL(storageRef);
+    // Upload image if selected
+    let newImageName = '';
+    if (selectedImage) {
+      try {
+        const formData = new FormData();
+        formData.append('myImage', selectedImage);
+        const { data } = await axios.post('/api/image', formData);
 
-    // Save product details to Firestore
-    try {
-      const productsCollection = collection(db, 'products');
-      const newProduct = {
-        title: productData.title,
-        price: productData.price,
-        features: productData.features,
-        description: productData.description,
-        productNumber: productData.productNumber,
-        photoUrl: photoUrl,
-      };
-      await addDoc(productsCollection, newProduct);
-      console.log('Product added successfully');
-    } catch (error) {
-      console.error('Error adding product:', error);
+        // Get the actual name of the uploaded image
+        newImageName = selectedImage.name;
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
+
+    // Convert features string to an array
+    const featuresArray = inputData.features.split(',').map(feature => feature.trim());
+
+    // Call the addUser function with modified data
+    const inputDataWithImage = {
+      ...inputData,
+      imageName: newImageName,
+      productId: parseInt(inputData.productId),
+      price: parseInt(inputData.price),
+      features: featuresArray,
+    };
+    addUser(inputDataWithImage);
+
+    // Add the user input and image data to Firebase if needed
   };
 
-  
   return (
     <div>
-    <h1>Add Product</h1>
-    <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="Title" onChange={(e) => setProductData((prevData) => ({ ...prevData, title: e.target.value }))} />
-      <input type="number" placeholder="Price" onChange={(e) => setProductData((prevData) => ({ ...prevData, price: parseFloat(e.target.value) }))} />
-      <textarea placeholder="Features" onChange={(e) => setProductData((prevData) => ({ ...prevData, features: e.target.value }))}></textarea>
-      <textarea placeholder="Description" onChange={(e) => setProductData((prevData) => ({ ...prevData, description: e.target.value }))}></textarea>
-      <input type="text" placeholder="Product Number" onChange={(e) => setProductData((prevData) => ({ ...prevData, productNumber: e.target.value }))} />
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      <button type="submit">Add Product</button>
-    </form>
-  </div>
-  );
-}
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <div>
+          <label htmlFor="productName">Product Name: </label>
+          <input
+            type="text"
+            name="productName"
+            value={inputData.productName || ''}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="productId">Product ID: </label>
+          <input
+            type="text"
+            name="productId"
+            value={inputData.productId || ''}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="price">Price: </label>
+          <input
+            type="number"
+            name="price"
+            value={inputData.price || ''}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="description">Description: </label>
+          <textarea
+            name="description"
+            value={inputData.description || ''}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="features">Features: </label>
+          <textarea
+            name="features"
+            value={inputData.features || ''}
+            onChange={handleInputChange}
+          />
+        </div>
+        {/* File input for image selection */}
+        <div>
+          <label htmlFor="image">Image: </label>
+          <input type="file" accept="image/*" onChange={handleImageSelect} />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
 
-export default AddProduct;
+      <div>
+        <h2>Input Object:</h2>
+        <pre>{JSON.stringify(inputData, null, 2)}</pre>
+      </div>
+    </div>
+  );
+};
+
+export default UserInputForm;

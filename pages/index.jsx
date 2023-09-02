@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
 
-import addUser from './data';
+import addUser from '../src/data';
 
 import { collection, getDocs } from "firebase/firestore"; 
 
-import { db } from "./firebase";
+import { db } from "../src/firebase";
 
 // import css from 'styles/global.css'
 
