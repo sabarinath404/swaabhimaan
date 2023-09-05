@@ -5,13 +5,14 @@ import addUser from '../src/data';
 const UserInputForm = () => {
   const [inputData, setInputData] = useState({
     productName: '',
-    productId: 0,
+    productNo: 0,
     price: 0,
     description: '',
     features: '',
+    category: '', // Add category field to state
   });
 
-  const [selectedImage, setSelectedImage] = useState(null); // Track selected image file
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -29,37 +30,33 @@ const UserInputForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Upload image if selected
     let newImageName = '';
     if (selectedImage) {
       try {
         const formData = new FormData();
         formData.append('myImage', selectedImage);
         const { data } = await axios.post('/api/image', formData);
-
-        // Get the actual name of the uploaded image
         newImageName = selectedImage.name;
       } catch (error) {
         console.error('Error uploading image:', error);
       }
     }
 
-    // Convert features string to an array
-    const featuresArray = inputData.features.split(',').map(feature => feature.trim());
+    const featuresArray = inputData.features.split(',').map((feature) => feature.trim());
 
-    // Call the addUser function with modified data
     const inputDataWithImage = {
       ...inputData,
       imageName: newImageName,
-      productId: parseInt(inputData.productId),
+      productNo: parseInt(inputData.productNo),
       price: parseInt(inputData.price),
       features: featuresArray,
     };
     addUser(inputDataWithImage);
-
-    // Add the user input and image data to Firebase if needed
   };
 
+
+
+  
   return (
     <div>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -73,11 +70,11 @@ const UserInputForm = () => {
           />
         </div>
         <div>
-          <label htmlFor="productId">Product ID: </label>
+          <label htmlFor="productNo">Product No: </label>
           <input
             type="text"
-            name="productId"
-            value={inputData.productId || ''}
+            name="productNo"
+            value={inputData.productNo || ''}
             onChange={handleInputChange}
           />
         </div>
@@ -106,7 +103,21 @@ const UserInputForm = () => {
             onChange={handleInputChange}
           />
         </div>
-        {/* File input for image selection */}
+        <div>
+          <label htmlFor="category">Category: </label>
+          <select
+            name="category"
+            value={inputData.category}
+            onChange={handleInputChange}
+          >
+            <option value="">Select a category</option>
+            <option value="Category 1">Category 1</option>
+            <option value="Category 2">Category 2</option>
+            <option value="Category 3">Category 3</option>
+            <option value="Category 4">Category 4</option>
+            <option value="Category 5">Category 5</option>
+          </select>
+        </div>
         <div>
           <label htmlFor="image">Image: </label>
           <input type="file" accept="image/*" onChange={handleImageSelect} />

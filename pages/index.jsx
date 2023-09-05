@@ -13,12 +13,15 @@ import { db } from "../src/firebase";
 
 export default function Home() {
 
-const user = { first: 'John', last: 'Doe', born: 1990 };
-
-addUser(user);
 
 
 
+const scrollToCategory2 = () => {
+  // Scroll to the Category 2 section when the button is clicked
+  if (category2Ref.current) {
+    category2Ref.current.scrollIntoView({ behavior: 'smooth' });
+  }
+};
 
   return (
     <div>
@@ -333,9 +336,9 @@ addUser(user);
         </div>
         <div className="  category-card-container pb-20 pl-8 pr-8">
           <a
-            href="https://www.google.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/productList#catagory2"
+           
+           
           >
             <div className="category-card">
               <img
