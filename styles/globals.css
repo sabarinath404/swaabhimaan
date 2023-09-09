@@ -30,6 +30,14 @@
   margin-left: 5%; /* Set the left margin to create the gap */
   margin-right: 5%; /* Set the right margin to create the gap */
 }
+.custom-hrn {
+  height: 3px; /* Set the height of the line */
+  background-color: #000000; /* Change to your desired color */
+  margin: 0rem 0; /* Adjust the margin as needed */
+  width: 90%; /* Set the width of the line */
+  margin-left: 2%; /* Set the left margin to create the gap */
+  margin-right: 5%; /* Set the right margin to create the gap */
+}
 /* body {
  background-color: aqua;
 } */
@@ -58,7 +66,7 @@ ul.horizontal-list {
 
 
 .card .title {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif 'Montserrat', sans-serif;
   font-size: 0.9em;
   position: absolute;
   left: 0.625em;
@@ -156,8 +164,8 @@ ul.horizontal-list {
 .category-card {
   width: calc(33.33% - 20px); 
   --border-radius: 0.75rem;
-  --primary-color: #7257fa;
-  --secondary-color: #3c3852;
+  --primary-color: #21335A;
+  --secondary-color: #21335A;
   width: 210px;
   font-family: "Arial";
   padding: 1rem;
@@ -214,7 +222,7 @@ ul.horizontal-list {
 }
 
 .category-card:hover .category-card__arrow {
-  background: #6072f7;
+  background: #B8B071;
 }
 
 .category-card:hover .category-card__arrow svg {
@@ -231,11 +239,39 @@ ul.horizontal-list {
 
 
 
+/* styles/custom.css */
+.font-alice {
+  font-family: 'Alice', sans-serif;
+}
+
+.font-cardo {
+  font-family: 'Cardo', serif;
+}
+
+.font-alegreya-sc {
+  font-family: 'Alegreya SC', serif;
+}
 
 
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.bg-custom-purple {
+  background-color: #21335A;
+  color: #FFFFFF;
+}
 
 
+.bg-custom-skin {
+  background-color: #EAE7DD;
+  color: #FFFFFF;
+}
 
+.text-custom-color {
+  color: #B8B071;
+}
 
-
-
+.text-custom-puruple {
+  color: #21335A;
+}

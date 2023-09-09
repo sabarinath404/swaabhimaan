@@ -24,3 +24,12 @@ export const fetchProducts = async () => {
     throw error;
   }
 };
+export async function fetchProductById(productId) {
+  // Replace this with your actual data fetching logic
+  const response = await fetch(`/api/products/${productId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch product');
+  }
+  const product = await response.json();
+  return product;
+}
