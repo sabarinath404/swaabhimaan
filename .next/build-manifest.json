@@ -31,11 +31,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/productDisplayPage.js"
-    ],
-    "/productList": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/productList.js"
     ]
   },
   "ampFirstPages": []

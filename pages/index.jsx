@@ -57,7 +57,7 @@ export default function Home() {
         }}
       >
         <div className="w-full text-gray-700 border-t shadow-sm body-font  ">
-          <div className="container flex flex-col flex-wrap items-center p-5 mx-auto md:flex-row lg:justify-around ">
+          <div className="container flex flex-col flex-wrap items-center p-5 pl-12 pr-12 mx-auto md:flex-row lg:justify-around ">
             {/* <img src="/path/to/your/logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 mb-4 object-contain lg:mb-0" /> */}
             <nav className="flex flex-wrap items-center text-base lg:w-2/5 md:m-auto ">
               <a
@@ -110,7 +110,7 @@ export default function Home() {
               <a
                 rel="noopener noreferrer"
                 href="#"
-                className="px-12 py-3 text-lg pt-3 rounded bg-custom-purple"
+                className="px-12 py-3 text-lg pt-3 rounded bg-custom-purple "
               >
                 Read more
               </a>
@@ -135,7 +135,7 @@ export default function Home() {
                 <a
                   rel="noopener noreferrer"
                   href="#"
-                  className="px-12 py-3 text-lg font-semibold rounded bg-custom-purple"
+                  className="px-12 py-3 text-lg font-semibold rounded bg-custom-purple "
                 >
                   Read more
                 </a>
